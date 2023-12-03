@@ -1,0 +1,108 @@
+key_trigger {
+  input: KEY_M
+  action: "M"
+}
+key_trigger {
+  input: KEY_A
+  action: "A"
+}
+key_trigger {
+  input: KEY_Q
+  action: "Q"
+}
+key_trigger {
+  input: KEY_W
+  action: "W"
+}
+key_trigger {
+  input: KEY_E
+  action: "E"
+}
+key_trigger {
+  input: KEY_R
+  action: "R"
+}
+key_trigger {
+  input: KEY_T
+  action: "T"
+}
+key_trigger {
+  input: KEY_Y
+  action: "Y"
+}
+key_trigger {
+  input: KEY_U
+  action: "U"
+}
+key_trigger {
+  input: KEY_I
+  action: "I"
+}
+key_trigger {
+  input: KEY_O
+  action: "O"
+}
+key_trigger {
+  input: KEY_P
+  action: "P"
+}
+key_trigger {
+  input: KEY_S
+  action: "S"
+}
+key_trigger {
+  input: KEY_D
+  action: "D"
+}
+key_trigger {
+  input: KEY_F
+  action: "F"
+}
+key_trigger {
+  input: KEY_G
+  action: "G"
+}
+key_trigger {
+  input: KEY_H
+  action: "H"
+}
+key_trigger {
+  input: KEY_J
+  action: "J"
+}
+key_trigger {
+  input: KEY_K
+  action: "K"
+}
+key_trigger {
+  input: KEY_L
+  action: "L"
+}
+key_trigger {
+  input: KEY_Z
+  action: "Z"
+}
+key_trigger {
+  input: KEY_X
+  action: "X"
+}
+key_trigger {
+  input: KEY_C
+  action: "C"
+}
+key_trigger {
+  input: KEY_V
+  action: "V"
+}
+key_trigger {
+  input: KEY_B
+  action: "B"
+}
+key_trigger {
+  input: KEY_N
+  action: "N"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "touch"
+}

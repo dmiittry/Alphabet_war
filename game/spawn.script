@@ -1,0 +1,15 @@
+require("globals.global")
+
+local function spawn_word(self)
+	math.randomseed(os.time())
+	factory.create("#word", vmath.vector3(math.random(20, 700),1350,0) ,nil)
+end
+
+function init(self)
+	new_list()
+	spawn_word(self)
+	timer.delay(0.5, true, 
+	function() 
+		spawn_word(self)
+	end)
+end
