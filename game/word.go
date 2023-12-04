@@ -46,23 +46,18 @@ embedded_components {
   "blend_mode: BLEND_MODE_ALPHA\n"
   "line_break: false\n"
   "text: \"Label\"\n"
-  "font: \"/builtins/fonts/system_font.font\"\n"
+  "font: \"/gui/font.font\"\n"
   "material: \"/builtins/fonts/label.material\"\n"
   ""
   position {
     x: 0.0
     y: 0.0
-    z: 0.0
+    z: 0.5
   }
   rotation {
     x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
-  }
-  scale {
-    x: 2.0
-    y: 2.0
-    z: 1.0
   }
 }

@@ -1,15 +1,44 @@
 require("globals.global")
 
 local function spawn_word(self)
-	math.randomseed(os.time())
-	factory.create("#word", vmath.vector3(math.random(20, 700),1350,0) ,nil)
+	local rand = math.random(1, #POSITION_WORD)
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1280,0) ,nil, { speed = SPEED_WORD })
+	remove_pos_word(rand)
+end
+
+local function endless_mode(self, dt)
+	self.speed = self.speed - dt
+	self.time = self.time - dt
+	if self.time < 0 then
+		spawn_word(self)
+		self.time = TIME_SPAWN_WORD
+	end
+	if self.speed < 0 then
+		SPEED_WORD = SPEED_WORD - 1
+		TIME_SPAWN_WORD = TIME_SPAWN_WORD - 0.1
+		if SPEED_WORD <= 5 then
+			SPEED_WORD = SPEED_WORD - 0.2
+			TIME_SPAWN_WORD = 0.5
+			if SPEED_WORD < 3 then
+				TIME_SPAWN_WORD = 0.3
+			end
+		end
+		self.speed = 40
+	end
 end
 
 function init(self)
-	new_list()
+	math.randomseed(os.time())
+	new_list_word()
+	new_list_pos()
 	spawn_word(self)
-	timer.delay(0.5, true, 
-	function() 
-		spawn_word(self)
-	end)
+	self.time = TIME_SPAWN_WORD
+	self.speed = 30
+	self.mode = GAME_MODE
+end
+
+function update(self, dt)
+	if self.mode == "endless" then
+		endless_mode(self, dt)
+	end
 end

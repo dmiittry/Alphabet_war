@@ -1,0 +1,156 @@
+require("globals.global")
+require("globals.text")
+-- main:/go#guigame
+
+local time = 0
+local second = 0
+local score = 0
+
+local function set_color(node)
+	gui.animate(node, "color", GREY_COLOR, gui.EASING_LINEAR, 0.35, 0, 
+	function()
+		gui.set_color(node, WHITE_COLOR)
+	end)
+end
+
+function init(self)
+	msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
+	change_lang("ru")
+	msg.post(".", "acquire_input_focus")
+	SCORE_NODE = gui.get_node("score")
+	MENU_NODE = gui.get_node("menu")
+	TIME_NODE = gui.get_node("time")
+	gui.set_text(SCORE_NODE, LANG_TEXT["score"]..score)
+	gui.set_text(MENU_NODE, LANG_TEXT["menu"])
+	Q_NODE = gui.get_node("Q")
+	W_NODE = gui.get_node("W")
+	E_NODE = gui.get_node("E")
+	R_NODE = gui.get_node("R")
+	T_NODE = gui.get_node("T")
+	Y_NODE = gui.get_node("Y")
+	U_NODE = gui.get_node("U")
+	I_NODE = gui.get_node("I")
+	O_NODE = gui.get_node("O")
+	P_NODE = gui.get_node("P")
+	A_NODE = gui.get_node("A")
+	S_NODE = gui.get_node("S")
+	D_NODE = gui.get_node("D")
+	F_NODE = gui.get_node("F")
+	G_NODE = gui.get_node("G")
+	H_NODE = gui.get_node("H")
+	J_NODE = gui.get_node("J")
+	K_NODE = gui.get_node("K")
+	L_NODE = gui.get_node("L")
+	Z_NODE = gui.get_node("Z")
+	X_NODE = gui.get_node("X")
+	C_NODE = gui.get_node("C")
+	V_NODE = gui.get_node("V")
+	B_NODE = gui.get_node("B")
+	N_NODE = gui.get_node("N")
+	M_NODE = gui.get_node("M")
+end
+
+function update(self, dt)
+	time = time + dt
+	local minuta = time / 60
+	second = second + dt
+	if second > 60 then
+		second = 0
+	end
+	local format = string.format("%01d:%02d", minuta ,second)
+	if minuta < 1 then
+		format = string.format("%01d",second)
+	end
+	gui.set_text(TIME_NODE, format)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("score") then
+		score = score + message.value
+		gui.set_text(SCORE_NODE, LANG_TEXT["score"] .. score)
+	elseif message_id == hash("touch") then
+		set_color(gui.get_node(message.value))
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed and gui.pick_node(Q_NODE, action.x, action.y) then
+		TOUCH_WORD = "Q"
+		set_color(Q_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(W_NODE, action.x, action.y) then
+		TOUCH_WORD = "W"
+		set_color(W_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(E_NODE, action.x, action.y)  then
+		TOUCH_WORD = "E"
+		set_color(E_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(R_NODE, action.x, action.y) then
+		TOUCH_WORD = "R"
+		set_color(R_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(T_NODE, action.x, action.y) then
+		TOUCH_WORD = "T"
+		set_color(T_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(Y_NODE, action.x, action.y) then
+		TOUCH_WORD = "Y"
+		set_color(Y_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(U_NODE, action.x, action.y) then
+		TOUCH_WORD = "U"
+		set_color(U_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(I_NODE, action.x, action.y)  then
+		TOUCH_WORD = "I"
+		set_color(I_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(O_NODE, action.x, action.y) then
+		TOUCH_WORD = "O"
+		set_color(O_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(P_NODE, action.x, action.y) then
+		TOUCH_WORD = "P"
+		set_color(P_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(A_NODE, action.x, action.y) then
+		TOUCH_WORD = "A"
+		set_color(A_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(S_NODE, action.x, action.y) then
+		TOUCH_WORD = "S"
+		set_color(S_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(D_NODE, action.x, action.y)  then
+		TOUCH_WORD = "D"
+		set_color(D_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(F_NODE, action.x, action.y) then
+		TOUCH_WORD = "F"
+		set_color(F_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(G_NODE, action.x, action.y) then
+		TOUCH_WORD = "G"
+		set_color(G_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(H_NODE, action.x, action.y) then
+		TOUCH_WORD = "H"
+		set_color(H_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(J_NODE, action.x, action.y) then
+		TOUCH_WORD = "J"
+		set_color(J_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(K_NODE, action.x, action.y)  then
+		TOUCH_WORD = "K"
+		set_color(K_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(L_NODE, action.x, action.y) then
+		TOUCH_WORD = "L"
+		set_color(L_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(Z_NODE, action.x, action.y) then
+		TOUCH_WORD = "Z"
+		set_color(Z_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(X_NODE, action.x, action.y) then
+		TOUCH_WORD = "X"
+		set_color(X_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(C_NODE, action.x, action.y) then
+		TOUCH_WORD = "C"
+		set_color(C_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(V_NODE, action.x, action.y)  then
+		TOUCH_WORD = "V"
+		set_color(V_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(B_NODE, action.x, action.y) then
+		TOUCH_WORD = "B"
+		set_color(B_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(N_NODE, action.x, action.y) then
+		TOUCH_WORD = "N"
+		set_color(N_NODE)
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(M_NODE, action.x, action.y) then
+		TOUCH_WORD = "M"
+		set_color(M_NODE)
+	end
+end

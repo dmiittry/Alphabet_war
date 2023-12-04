@@ -14,3 +14,34 @@ input_method = HiddenInputField
 [project]
 title = WASD_WAR
 
+[collection]
+max_input_stack_entries = 999
+
+[collectionfactory]
+max_count = 999
+
+[factory]
+max_count = 999
+
+[label]
+max_count = 999
+
+[physics]
+trigger_overlap_capacity = 99
+
+[sound]
+max_sound_sources = 99
+
+[graphics]
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
+
+[html5]
+scale_mode = stretch
+show_fullscreen_button = 0
+show_made_with_defold = 0
+show_console_banner = 0
+
+[library]
+include_dirs = https://github.com/paweljarosz/pigeon.git
+
