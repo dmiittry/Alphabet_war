@@ -14,16 +14,22 @@ local function endless_mode(self, dt)
 		self.time = TIME_SPAWN_WORD
 	end
 	if self.speed < 0 then
-		SPEED_WORD = SPEED_WORD - 1
-		TIME_SPAWN_WORD = TIME_SPAWN_WORD - 0.1
+		factory.create("#bonus")
+		SPEED_WORD = SPEED_WORD - self.minus_speed 
+		TIME_SPAWN_WORD = TIME_SPAWN_WORD - self.minus_time
 		if SPEED_WORD <= 5 then
-			SPEED_WORD = SPEED_WORD - 0.2
-			TIME_SPAWN_WORD = 0.5
-			if SPEED_WORD < 3 then
+			self.minus_speed  = 0.03
+			if SPEED_WORD <= 4 then
+				SPEED_WORD = 4
+			end
+		end
+		if TIME_SPAWN_WORD <= 0.5 then
+			self.minus_time = 0.01
+			if TIME_SPAWN_WORD <= 0.3 then
 				TIME_SPAWN_WORD = 0.3
 			end
 		end
-		self.speed = 40
+		self.speed = 30
 	end
 end
 
@@ -35,6 +41,9 @@ function init(self)
 	self.time = TIME_SPAWN_WORD
 	self.speed = 30
 	self.mode = GAME_MODE
+	self.minus_speed = 0.5
+	self.minus_time = 0.05
+	factory.create("#bonus")
 end
 
 function update(self, dt)

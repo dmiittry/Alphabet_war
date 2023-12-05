@@ -1,6 +1,6 @@
 components {
-  id: "word"
-  component: "/game/word.script"
+  id: "bonus_line"
+  component: "/game/bonus_line.script"
   position {
     x: 0.0
     y: 0.0
@@ -13,9 +13,14 @@ components {
     w: 1.0
   }
 }
-components {
-  id: "click1"
-  component: "/sfx/click1.sound"
+embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "tile_set: \"/game/atlas.atlas\"\n"
+  "default_animation: \"line\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
+  ""
   position {
     x: 0.0
     y: 0.0
@@ -33,7 +38,7 @@ embedded_components {
   type: "label"
   data: "size {\n"
   "  x: 128.0\n"
-  "  y: 50.0\n"
+  "  y: 32.0\n"
   "  z: 0.0\n"
   "  w: 0.0\n"
   "}\n"
@@ -57,23 +62,81 @@ embedded_components {
   "}\n"
   "leading: 1.0\n"
   "tracking: 0.0\n"
-  "pivot: PIVOT_S\n"
+  "pivot: PIVOT_CENTER\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   "line_break: false\n"
-  "text: \"W\"\n"
+  "text: \"x3\"\n"
   "font: \"/gui/font.font\"\n"
   "material: \"/builtins/fonts/label.material\"\n"
   ""
   position {
-    x: 0.0
-    y: 0.0
-    z: 0.5
+    x: -351.0
+    y: 12.0
+    z: 0.0
   }
   rotation {
     x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+    z: 1.0
+  }
+}
+embedded_components {
+  id: "label1"
+  type: "label"
+  data: "size {\n"
+  "  x: 128.0\n"
+  "  y: 32.0\n"
+  "  z: 0.0\n"
+  "  w: 0.0\n"
+  "}\n"
+  "color {\n"
+  "  x: 1.0\n"
+  "  y: 1.0\n"
+  "  z: 1.0\n"
+  "  w: 1.0\n"
+  "}\n"
+  "outline {\n"
+  "  x: 0.0\n"
+  "  y: 0.0\n"
+  "  z: 0.0\n"
+  "  w: 1.0\n"
+  "}\n"
+  "shadow {\n"
+  "  x: 0.0\n"
+  "  y: 0.0\n"
+  "  z: 0.0\n"
+  "  w: 1.0\n"
+  "}\n"
+  "leading: 1.0\n"
+  "tracking: 0.0\n"
+  "pivot: PIVOT_CENTER\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
+  "line_break: false\n"
+  "text: \"x3\"\n"
+  "font: \"/gui/font.font\"\n"
+  "material: \"/builtins/fonts/label.material\"\n"
+  ""
+  position {
+    x: 352.0
+    y: 12.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+    z: 1.0
   }
 }
 embedded_components {
@@ -84,14 +147,14 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"word\"\n"
-  "mask: \"bonus\"\n"
+  "group: \"bonus\"\n"
+  "mask: \"word\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
   "      x: 0.0\n"
-  "      y: 31.0\n"
+  "      y: 0.0\n"
   "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
@@ -103,8 +166,8 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 19.195402\n"
-  "  data: 22.963106\n"
+  "  data: 350.0\n"
+  "  data: 2.5\n"
   "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"

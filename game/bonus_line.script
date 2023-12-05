@@ -1,0 +1,8 @@
+function init(self)
+	math.randomseed(os.time())
+	local speed = math.random(10, 20)
+	local posx = 360
+	local posy = 500
+	go.set_position(vmath.vector3(posx, posy, 0))
+	go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(360,1100,0), go.EASING_LINEAR, speed, 0, function()go.delete()end)
+end
