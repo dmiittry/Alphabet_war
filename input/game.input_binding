@@ -102,6 +102,30 @@ key_trigger {
   input: KEY_N
   action: "N"
 }
+key_trigger {
+  input: KEY_COLON
+  action: "jh"
+}
+key_trigger {
+  input: KEY_LBRACE
+  action: "xi"
+}
+key_trigger {
+  input: KEY_LESS
+  action: "bi"
+}
+key_trigger {
+  input: KEY_GREATER
+  action: "yu"
+}
+key_trigger {
+  input: KEY_QUOTE
+  action: "qu"
+}
+key_trigger {
+  input: KEY_RBRACE
+  action: "tz"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

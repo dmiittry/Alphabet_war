@@ -89,7 +89,6 @@ function on_message(self, message_id, message, sender)
 			sound.set_group_gain("down", 0.5)
 		else
 			delete_word = delete_word + 1
-			print(delete_word, '=' , count_word)
 			if count_word == delete_word then
 				sound.set_group_gain("bg", 0.5)
 				sound.set_group_gain("down", 0)
@@ -103,6 +102,24 @@ end
 function on_input(self, action_id, action)
 	if action_id == HASH_TOUCH and action.pressed and gui.pick_node(Q_NODE, action.x, action.y) or action_id == hash("Q") and action.pressed then
 		TOUCH_WORD = "Q"
+		set_color(Q_NODE)
+	elseif action_id == hash("jh") and action.pressed then
+		print("ж")
+		set_color(Q_NODE)
+	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("xi") and action.pressed then
+		print("х")
+		set_color(Q_NODE)
+	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("bi") and action.pressed then
+		print("б")
+		set_color(Q_NODE)
+	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("yu") and action.pressed then
+		print("ю")
+		set_color(Q_NODE)
+	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("qu") and action.pressed then
+		print("э")
+		set_color(Q_NODE)
+	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("tz") and action.pressed then
+		print("ъ")
 		set_color(Q_NODE)
 	elseif action_id == HASH_TOUCH and action.pressed and gui.pick_node(W_NODE, action.x, action.y) or action_id == hash("W") and action.pressed then
 		TOUCH_WORD = "W"
