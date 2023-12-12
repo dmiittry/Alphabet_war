@@ -1,0 +1,66 @@
+require("globals.global")
+require("globals.text")
+
+local function play(self)
+	msg.post("#collectionproxy", "set_time_step", {factor = 1, mode = 0})
+end
+
+local function stop(self)
+	msg.post("#collectionproxy", "set_time_step", {factor = 0, mode = 0})
+end
+
+-- menu:/go#menu
+function init(self)
+	change_lang("ru")
+	msg.post(".", "acquire_input_focus")
+	msg.post("#collectionproxy", "load")
+	self.is_play = true
+	PAUSE_NODE = gui.get_node("pause")
+	DEAD_NODE = gui.get_node("dead")
+	DEAD_TEXT = gui.get_node("dead_text")
+	TIME_TEXT = gui.get_node("time_text")
+	WORD_TEXT = gui.get_node("word_text")
+	SCORE_TEXT = gui.get_node("score_text")
+	CONTINUE_TEXT = gui.get_node("continue_text")
+	EXIT_TEXT = gui.get_node("exit_text")
+	gui.set_enabled(PAUSE_NODE, false)
+	gui.set_enabled(DEAD_NODE, false)
+	msg.post(".", "change_text")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		msg.post(sender, "enable")
+	elseif message_id == hash("change_text") then
+		gui.set_text(DEAD_TEXT, LANG_TEXT["dead"])
+		gui.set_text(TIME_TEXT, LANG_TEXT["play_time"] .. PLAY_TIME)
+		gui.set_text(SCORE_TEXT, LANG_TEXT["score"] .. SCORE)
+		gui.set_text(WORD_TEXT, LANG_TEXT["word"] .. ALL_WORD)
+		gui.set_text(CONTINUE_TEXT, LANG_TEXT["continue"])
+		gui.set_text(EXIT_TEXT, LANG_TEXT["exit"])
+	elseif message_id == hash("game_state") then
+		self.play = not self.play
+		if self.play then
+			play(self)
+			gui.set_enabled(PAUSE_NODE, false)
+		else
+			stop(self)
+			gui.set_enabled(PAUSE_NODE, true)
+		end
+	elseif message_id == hash("dead") then
+		stop(self)
+		msg.post(".", "change_text")
+		gui.set_enabled(DEAD_NODE, true)
+	elseif message_id == hash("comeback") then
+		KILL_ALL = true
+		gui.set_enabled(DEAD_NODE, false)
+		play(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed and gui.pick_node(EXIT_TEXT, action.x, action.y) then
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(CONTINUE_TEXT, action.x, action.y) then
+		msg.post(".", "comeback")
+	end
+end

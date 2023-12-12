@@ -17,6 +17,7 @@ local function endless_mode(self, dt)
 		factory.create("#bonus")
 		SPEED_WORD = SPEED_WORD - self.minus_speed 
 		TIME_SPAWN_WORD = TIME_SPAWN_WORD - self.minus_time
+		msg.post("main:/go#guigame", "set_color")
 		if SPEED_WORD <= 5 then
 			self.minus_speed  = 0.03
 			if SPEED_WORD <= 4 then
@@ -35,14 +36,16 @@ end
 
 function init(self)
 	math.randomseed(os.time())
+	set_life(-3)
 	new_list_word()
 	new_list_pos()
 	spawn_word(self)
 	self.time = TIME_SPAWN_WORD
 	self.speed = 30
 	self.mode = GAME_MODE
-	self.minus_speed = 0.5
+	self.minus_speed = 1
 	self.minus_time = 0.05
+	self.color = 1
 	factory.create("#bonus")
 end
 

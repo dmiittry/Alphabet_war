@@ -103,7 +103,7 @@ key_trigger {
   action: "N"
 }
 key_trigger {
-  input: KEY_COLON
+  input: KEY_SEMICOLON
   action: "jh"
 }
 key_trigger {
@@ -125,6 +125,10 @@ key_trigger {
 key_trigger {
   input: KEY_RBRACE
   action: "tz"
+}
+key_trigger {
+  input: KEY_ESC
+  action: "esc"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1
