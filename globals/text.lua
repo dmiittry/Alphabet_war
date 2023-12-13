@@ -4,19 +4,25 @@ RUS_TEXT = {
 	score = "счёт: ",
 	menu = "||",
 	exit = "Сдаться!",
-	continue = "Продолжить за просмотр рекламы",
+	pause = "Пауза",
+	continue = "Продолжить",
+	continue_ads = "Продолжить за просмотр рекламы",
 	dead = "Вы проиграли!",
 	play_time = "Время игры: ",
 	word = "Общее кол-во букв: ",
+	accuracy = "аккуратность: ",
 }
 ENG_TEXT = {
 	score = "score: ",
 	menu = "||",
 	exit = "Surrender!",
-	continue = "Continue for adverts",
+	pause = "Pause",
+	continue = "Continue",
+	continue_ads = "Continue for adverts",
 	dead = "You lose!",
 	play_time = "Play time: ",
 	word = "Total letters: ",
+	accuracy = "accuracy: ",
 }
 
 function change_lang(lang)

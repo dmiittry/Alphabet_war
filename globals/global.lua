@@ -12,6 +12,8 @@ KILL_ALL = false
 TOUCH_WORD = ""
 GAME_MODE = "endless"
 ALL_WORD = 0
+ALL_TOUCH = 0
+ACCURACY = 0
 SCORE = 0
 PLAY_TIME = 0
 
@@ -22,10 +24,29 @@ POSITION_WORD = {}
 POSITION_LIST = {20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700}
 
 LIFE = 0
+MAX_LIFE = 3
+function set_accuracy()
+	ACCURACY = ALL_WORD * 100 / ALL_TOUCH
+	print(ACCURACY, ALL_TOUCH, ALL_WORD)
+end
+function set_score(value)
+	SCORE = SCORE + value
+	msg.post("main:/go#guigame", "score")
+end
 
 function set_life(value)
-	LIFE = LIFE - value
+	if value == 0 then
+		LIFE = MAX_LIFE
+	elseif value > 0 then
+		LIFE = LIFE - value
+		msg.post("main:/go#guigame", "minus_life")
+	elseif value < 0 then
+		if LIFE < MAX_LIFE then
+			LIFE = LIFE - value
+		end
+	end
 	if LIFE <= 0 then
+		msg.post("main:/go#guigame", "dead")
 		msg.post("menu:/go#menu", "dead")
 	end
 	msg.post("main:/go#guigame", "set_life", {value = LIFE})

@@ -127,8 +127,8 @@ key_trigger {
   action: "tz"
 }
 key_trigger {
-  input: KEY_ESC
-  action: "esc"
+  input: KEY_TAB
+  action: "tab"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1

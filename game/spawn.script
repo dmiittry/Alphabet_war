@@ -36,7 +36,7 @@ end
 
 function init(self)
 	math.randomseed(os.time())
-	set_life(-3)
+	set_life(0)
 	new_list_word()
 	new_list_pos()
 	spawn_word(self)

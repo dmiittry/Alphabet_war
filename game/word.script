@@ -13,6 +13,9 @@ end
 local function minus_hp(self)
 	set_life(1)
 	go.delete()
+	if self.down_word then
+		msg.post("main:/go#guigame", "down", {value = false})
+	end
 end
 
 local function finish_word(self)
@@ -35,7 +38,7 @@ local function touch_word(self)
 		go.cancel_animations(".")
 		go.cancel_animations("#label")
 		msg.post("@render:", "draw_line", { start_point = start_pos, end_point = end_pos, color = WHITE_COLOR })
-		msg.post("main:/go#guigame", "score", {value = self.bonus})
+		set_score(self.bonus)
 		msg.post("main:/go#guigame", "touch", {value = self.word})
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_OUTSINE, 0.6, 0, delete)
 		if self.bonus == 3 then
