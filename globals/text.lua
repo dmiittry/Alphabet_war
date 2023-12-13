@@ -1,7 +1,7 @@
 LANG_TEXT = {}
 
 RUS_TEXT = {
-	score = "счёт: ",
+	score = "Cчёт: ",
 	menu = "||",
 	exit = "Сдаться!",
 	pause = "Пауза",
@@ -10,10 +10,15 @@ RUS_TEXT = {
 	dead = "Вы проиграли!",
 	play_time = "Время игры: ",
 	word = "Общее кол-во букв: ",
-	accuracy = "аккуратность: ",
+	accuracy = "Aккуратность: ",
+	record = "Ваш рекорд: ",
+	select_mode = "Выберите режим:",
+	level_mode = " Уровень",
+	endless_mode = "Бесконечный режим",
+	lang = "Язык: Русский",
 }
 ENG_TEXT = {
-	score = "score: ",
+	score = "Score: ",
 	menu = "||",
 	exit = "Surrender!",
 	pause = "Pause",
@@ -22,7 +27,12 @@ ENG_TEXT = {
 	dead = "You lose!",
 	play_time = "Play time: ",
 	word = "Total letters: ",
-	accuracy = "accuracy: ",
+	accuracy = "Accuracy: ",
+	record = "Your record: ",
+	select_mode = "Select mode:",
+	level_mode = " Level",
+	endless_mode = "Endless mode",
+	lang = "Language: English",
 }
 
 function change_lang(lang)

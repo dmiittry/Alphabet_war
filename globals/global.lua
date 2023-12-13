@@ -7,10 +7,15 @@ GREY_COLOR = vmath.vector4(0.4,0.4,0.4,1)
 
 SPEED_WORD = 9 -- 4 min / 9 max
 TIME_SPAWN_WORD = 0.8 -- 0.3 min / 0.8 max
-
+ENDLESS_TIME_SPAWN_WORD = 0.8
+ENDLESS_SPEED_WORD = 9
+LEVEL_TIME_SPAWN_WORD = {1.2,1.2,1.2,1.2}
+LEVEL_SPEED_WORD = {12,12,12,12}
+LEVEL_PLAY_TIME = {60,60,60,60}
+LEVEL = 1
+GAME_MODE = "endless"
 KILL_ALL = false
 TOUCH_WORD = ""
-GAME_MODE = "endless"
 ALL_WORD = 0
 ALL_TOUCH = 0
 ACCURACY = 0
@@ -27,13 +32,11 @@ LIFE = 0
 MAX_LIFE = 3
 function set_accuracy()
 	ACCURACY = ALL_WORD * 100 / ALL_TOUCH
-	print(ACCURACY, ALL_TOUCH, ALL_WORD)
 end
 function set_score(value)
 	SCORE = SCORE + value
 	msg.post("main:/go#guigame", "score")
 end
-
 function set_life(value)
 	if value == 0 then
 		LIFE = MAX_LIFE

@@ -8,6 +8,7 @@ local function delete(self)
 		msg.post("main:/go#guigame", "down", {value = false})
 	end
 	KILL_ALL = false
+	set_accuracy()
 end
 
 local function minus_hp(self)
@@ -39,7 +40,7 @@ local function touch_word(self)
 		go.cancel_animations("#label")
 		msg.post("@render:", "draw_line", { start_point = start_pos, end_point = end_pos, color = WHITE_COLOR })
 		set_score(self.bonus)
-		msg.post("main:/go#guigame", "touch", {value = self.word})
+		-- msg.post("main:/go#guigame", "touch", {value = self.word})
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_OUTSINE, 0.6, 0, delete)
 		if self.bonus == 3 then
 			go.animate("#label", "color", go.PLAYBACK_ONCE_FORWARD, GREEN_COLOR, go.EASING_LINEAR, 0.3, 0)

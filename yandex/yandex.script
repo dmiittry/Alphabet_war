@@ -1,0 +1,179 @@
+-- require("globals.global")
+-- local yagames = require("yagames.yagames")
+-- 
+-- local function adv_open(self)
+-- 	print('open')
+-- 	for key, value in pairs(sound.get_groups()) do
+-- 		sound.set_group_gain(value, 0)
+-- 	end
+-- end
+-- 
+-- local function adv_close(self, was_shown)
+-- 	print('close')
+-- 	msg.post("menu:/main#mainhud", "loading")
+-- 	for key, value in pairs(sound.get_groups()) do
+-- 		sound.set_group_gain(value, 1)
+-- 	end
+-- end
+-- 
+-- local function adv_offline(self)
+-- 	print('offle')
+-- 	-- Internet is offline
+-- end
+-- 
+-- local function adv_error(self, err)
+-- 	if err then
+-- 		print("bad adv_error :(", err)
+-- 	end
+-- end
+-- 
+-- local function rewarded_open(self)
+-- 	print('reward open')
+-- 	for key, value in pairs(sound.get_groups()) do
+-- 		sound.set_group_gain(value, 0)
+-- 	end
+-- end
+-- 
+-- local function rewarded_rewarded(self)
+-- 	print('reward rewarded')
+-- 	change_money(300)
+-- end
+-- 
+-- local function rewarded_close(self)
+-- 	for key, value in pairs(sound.get_groups()) do
+-- 		sound.set_group_gain(value, 1)
+-- 	end
+-- end
+-- 
+-- local function rewarded_error(self, err)
+-- 	if err then
+-- 		print("bad rewarded_error :(", err)
+-- 	end
+-- end
+-- 
+-- local function showfeedback(self, err, result)
+-- 	if err then
+-- 		print("bad showfeedback :(", err)
+-- 	end
+-- end
+-- 
+-- local function canshowfeedback(self, err, result)
+-- 	if result then
+-- 		yagames.feedback_request_review(showfeedback)
+-- 	end
+-- 	if err then
+-- 		print("bad canshowfeedback :(", err)
+-- 	end
+-- end
+-- local function auth_player(self, err, result)
+-- 	if err then
+-- 		print("bad auth_player :(", err)
+-- 	end
+-- end
+-- 
+-- local TABLE_NAME = "spisok"
+-- 
+-- local function init_handler(self, err)
+-- 	if err then
+-- 		print("bad init_handler :(", err)
+-- 	else
+-- 		yagames.player_init({scopes = false, signed = true}, function(self, err)
+-- 			if err then
+-- 				yagames.auth_open_auth_dialog(function(self, err) print("error") end)
+-- 				print("error", err)
+-- 			else
+-- 				local app = yagames.environment()
+-- 				local rus = app.i18n.lang
+-- 				print("language", rus)
+-- 				if rus == "ru" then
+-- 					LANG_RUS = true
+-- 				else
+-- 					LANG_RUS = false
+-- 				end
+-- 				msg.post(".", "get_device")
+-- 				PLAYER_NAME = yagames.player_get_name()
+-- 				yagames.player_get_stats(nil, function(self, err, stats)
+-- 					if err then
+-- 						ALL_KILL_MONSTER = 0
+-- 						print("error stats = ", err)
+-- 					else
+-- 						ALL_KILL_MONSTER = stats.score
+-- 						print("get stats = ", ALL_KILL_MONSTER)
+-- 						if ALL_KILL_MONSTER == nil then
+-- 							ALL_KILL_MONSTER = 0
+-- 							print("set stats = ", ALL_KILL_MONSTER)
+-- 						end
+-- 					end
+-- 					msg.post("menu:/main#mainhud", "loading")
+-- 				end)
+-- 				yagames.leaderboards_init(function(self, err)
+-- 					print("yagames.leaderboards_init:", err or "OK!")
+-- 					if not err then
+-- 						yagames.leaderboards_get_description(TABLE_NAME, function(self, err, result)
+-- 							if err then
+-- 								print("yagames.leaderboards_get_description:", err)
+-- 							else
+-- 								print("yagames.leaderboards_get_description:", result)
+-- 							end
+-- 						end)
+-- 					end
+-- 				end)
+-- 			end
+-- 		end)
+-- 		yagames.features_loadingapi_ready()
+-- 		msg.post(".", "show_fullscreen_adv")
+-- 		msg.post("menu:/main#mainhud", "loading")
+-- 	end
+-- end
+-- 
+-- function init(self)
+-- 	yagames.init(init_handler)
+-- end
+-- 
+-- function on_message(self, message_id, message)
+-- 	if message_id == hash("show_rewarded_video") then
+-- 		print('show_rewarded_video')
+-- 		yagames.adv_show_rewarded_video({
+-- 			open = rewarded_open,
+-- 			rewarded = rewarded_rewarded,
+-- 			close = rewarded_close,
+-- 			error = rewarded_error
+-- 		})
+-- 	elseif message_id == hash("show_fullscreen_adv") then
+-- 		print('show_fullscreen_adv')
+-- 		yagames.adv_show_fullscreen_adv({
+-- 			open = adv_open,
+-- 			close = adv_close,
+-- 			offline = adv_offline,
+-- 			error = adv_error
+-- 		})
+-- 	elseif message_id == hash("show_feedback") then
+-- 		yagames.feedback_can_review(canshowfeedback)
+-- 		print("feedback:", ret)
+-- 
+-- 	elseif message_id == hash("set_stats") then
+-- 		yagames.player_set_stats({score = message.value}, function(self, err)
+-- 			print("yagames.player_set_stats:", err or "OK")
+-- 		end)
+-- 
+-- 	elseif message_id == hash("leaderboard") then
+-- 		print("leaderboard = ", message.value)
+-- 		yagames.leaderboards_init(function(self, err)
+-- 			print("yagames.leaderboards_init:", err or "OK!")
+-- 			if not err then
+-- 				yagames.leaderboards_set_score(TABLE_NAME, message.value, nil, function(self, err)
+-- 					print("yagames.leaderboards_set_score (score=1):", err or "OK")
+-- 				end)
+-- 			end
+-- 		end)
+-- 
+-- 	elseif message_id == hash("get_device") then
+-- 		local device = yagames.device_info_is_desktop()
+-- 		print('desk', device)
+-- 		if device then
+-- 			GAMEPAD_ON = false
+-- 		else
+-- 			GAMEPAD_ON = true
+-- 		end
+-- 	end
+-- end

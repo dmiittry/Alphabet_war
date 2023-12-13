@@ -11,9 +11,9 @@ end
 
 -- menu:/go#menu
 function init(self)
-	change_lang("ru")
+	self.lang = "ru"
+	change_lang(self.lang)
 	msg.post(".", "acquire_input_focus")
-	msg.post("#collectionproxy", "load")
 	self.is_play = true
 	PAUSE_NODE = gui.get_node("pause")
 	DEAD_NODE = gui.get_node("dead")
@@ -31,6 +31,13 @@ function init(self)
 	CONTINUE_TEXT1 = gui.get_node("continue_text1")
 	EXIT_TEXT = gui.get_node("exit_text")
 	EXIT_TEXT1 = gui.get_node("exit_text1")
+	MENU_BOX = gui.get_node("menu_box")
+	RECORD_TEXT = gui.get_node("record")
+	SELCET_TEXT = gui.get_node("select_mode")
+	LEVEL_TEXT = gui.get_node("level_mode")
+	ENDLESS_TEXT = gui.get_node("endless_mode")
+	LANG_BTN_TEXT = gui.get_node("lang_btn")
+	gui.set_enabled(MENU_BOX, true)
 	gui.set_enabled(PAUSE_NODE, false)
 	gui.set_enabled(DEAD_NODE, false)
 	msg.post(".", "change_text")
@@ -40,12 +47,18 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("proxy_loaded") then
 		msg.post(sender, "enable")
 	elseif message_id == hash("change_text") then
+		gui.set_text(RECORD_TEXT, LANG_TEXT["record"] .. SCORE)
+		gui.set_text(SELCET_TEXT, LANG_TEXT["select_mode"])
+		gui.set_text(LEVEL_TEXT, LEVEL .. LANG_TEXT["level_mode"])
+		gui.set_text(ENDLESS_TEXT, LANG_TEXT["endless_mode"])
+		gui.set_text(LANG_BTN_TEXT, LANG_TEXT["lang"])
+		
 		gui.set_text(DEAD_TEXT, LANG_TEXT["dead"])
 		gui.set_text(TIME_TEXT, LANG_TEXT["play_time"] .. PLAY_TIME)
 		gui.set_text(SCORE_TEXT, LANG_TEXT["score"] .. SCORE)
 		gui.set_text(WORD_TEXT, LANG_TEXT["word"] .. ALL_WORD)
-		gui.set_text(ACCURACY_TEXT, LANG_TEXT["accuracy"] .. ACCURACY)
-		gui.set_text(ACCURACY_TEXT1, LANG_TEXT["accuracy"] .. ACCURACY)
+		gui.set_text(ACCURACY_TEXT, LANG_TEXT["accuracy"] .. string.format("%.1f", ACCURACY).."%")
+		gui.set_text(ACCURACY_TEXT1, LANG_TEXT["accuracy"] .. string.format("%.1f", ACCURACY).."%")
 		gui.set_text(CONTINUE_TEXT1, LANG_TEXT["continue"])
 		gui.set_text(CONTINUE_TEXT, LANG_TEXT["continue_ads"])
 		gui.set_text(EXIT_TEXT, LANG_TEXT["exit"])
@@ -72,6 +85,11 @@ function on_message(self, message_id, message, sender)
 		gui.set_enabled(DEAD_NODE, false)
 		set_life(0)
 		play(self)
+	elseif message_id == hash("main_menu") then
+		gui.set_enabled(PAUSE_NODE, false)
+		gui.set_enabled(DEAD_NODE, false)
+		msg.post("#collectionproxy", "unload")
+		gui.set_enabled(MENU_BOX, true)
 	end
 end
 
@@ -81,8 +99,46 @@ function on_input(self, action_id, action)
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(CONTINUE_TEXT1, action.x, action.y) and gui.is_enabled(PAUSE_NODE) then
 		msg.post(".", "game_state")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(EXIT_TEXT, action.x, action.y) and gui.is_enabled(DEAD_NODE) then
-		msg.post(".", "exit_game")
+		msg.post(".", "main_menu")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(EXIT_TEXT1, action.x, action.y) and gui.is_enabled(PAUSE_NODE) then
-		msg.post(".", "exit_game")
+		msg.post(".", "main_menu")
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(LEVEL_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
+		self.is_play = true
+		play(self)
+		gui.set_enabled(MENU_BOX, false)
+		GAME_MODE = "level"
+		TIME_SPAWN_WORD = LEVEL_TIME_SPAWN_WORD
+		SPEED_WORD = LEVEL_SPEED_WORD
+		KILL_ALL = false
+		TOUCH_WORD = ""
+		ALL_WORD = 0
+		ALL_TOUCH = 0
+		ACCURACY = 0
+		SCORE = 0
+		PLAY_TIME = 0
+		msg.post("#collectionproxy", "load")
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(ENDLESS_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
+		self.is_play = true
+		play(self)
+		gui.set_enabled(MENU_BOX, false)
+		GAME_MODE = "endless"
+		TIME_SPAWN_WORD = ENDLESS_TIME_SPAWN_WORD
+		SPEED_WORD = ENDLESS_SPEED_WORD
+		KILL_ALL = false
+		TOUCH_WORD = ""
+		ALL_WORD = 0
+		ALL_TOUCH = 0
+		ACCURACY = 0
+		SCORE = 0
+		PLAY_TIME = 0
+		msg.post("#collectionproxy", "load")
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(LANG_BTN_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
+		if self.lang == "ru" then
+			self.lang = "en"
+		else
+			self.lang = "ru"
+		end
+		change_lang(self.lang)
+		msg.post(".", "change_text")
 	end
 end

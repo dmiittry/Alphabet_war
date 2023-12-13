@@ -13,6 +13,8 @@ input_method = HiddenInputField
 
 [project]
 title = WASD_WAR
+developer = Mika games
+dependencies#0 = https://github.com/indiesoftby/defold-yagames/tree/master/yagames
 
 [collection]
 max_input_stack_entries = 999
@@ -31,6 +33,8 @@ trigger_overlap_capacity = 99
 
 [sound]
 max_sound_sources = 99
+max_component_count = 999
+max_sound_buffers = 999
 
 [graphics]
 default_texture_min_filter = nearest

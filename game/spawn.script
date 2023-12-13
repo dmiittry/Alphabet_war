@@ -2,7 +2,13 @@ require("globals.global")
 
 local function spawn_word(self)
 	local rand = math.random(1, #POSITION_WORD)
-	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1280,0) ,nil, { speed = SPEED_WORD })
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = SPEED_WORD })
+	remove_pos_word(rand)
+end
+
+local function level_spawn_word(self)
+	local rand = math.random(1, #POSITION_WORD)
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = SPEED_WORD[LEVEL] })
 	remove_pos_word(rand)
 end
 
@@ -11,6 +17,7 @@ local function endless_mode(self, dt)
 	self.time = self.time - dt
 	if self.time < 0 then
 		spawn_word(self)
+		-- line_spawn_word(self)
 		self.time = TIME_SPAWN_WORD
 	end
 	if self.speed < 0 then
@@ -34,13 +41,21 @@ local function endless_mode(self, dt)
 	end
 end
 
+local function level_mode(self, dt)
+	self.time = self.time - dt
+	if self.time < 0 then
+		level_spawn_word(self)
+		self.time = TIME_SPAWN_WORD[LEVEL]
+	end
+end
+
 function init(self)
 	math.randomseed(os.time())
 	set_life(0)
 	new_list_word()
 	new_list_pos()
-	spawn_word(self)
-	self.time = TIME_SPAWN_WORD
+	self.level = 0
+	self.time = 1
 	self.speed = 30
 	self.mode = GAME_MODE
 	self.minus_speed = 1
@@ -52,5 +67,9 @@ end
 function update(self, dt)
 	if self.mode == "endless" then
 		endless_mode(self, dt)
+		print("endless")
+	elseif self.mode == "level" then
+		level_mode(self, dt)
+		print("level")
 	end
 end
