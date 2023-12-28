@@ -2,13 +2,7 @@ require("globals.global")
 
 local function spawn_word(self)
 	local rand = math.random(1, #POSITION_WORD)
-	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = SPEED_WORD })
-	remove_pos_word(rand)
-end
-
-local function level_spawn_word(self)
-	local rand = math.random(1, #POSITION_WORD)
-	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = SPEED_WORD[LEVEL] })
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = ENDLESS_SPEED_WORD })
 	remove_pos_word(rand)
 end
 
@@ -17,35 +11,145 @@ local function endless_mode(self, dt)
 	self.time = self.time - dt
 	if self.time < 0 then
 		spawn_word(self)
-		-- line_spawn_word(self)
-		self.time = TIME_SPAWN_WORD
+		self.time = ENDLESS_TIME_SPAWN_WORD
 	end
 	if self.speed < 0 then
+		spawn_word(self)
 		factory.create("#bonus")
-		SPEED_WORD = SPEED_WORD - self.minus_speed 
-		TIME_SPAWN_WORD = TIME_SPAWN_WORD - self.minus_time
+		ENDLESS_SPEED_WORD = ENDLESS_SPEED_WORD - self.minus_speed 
+		ENDLESS_TIME_SPAWN_WORD = ENDLESS_TIME_SPAWN_WORD - self.minus_time
 		msg.post("main:/go#guigame", "set_color")
-		if SPEED_WORD <= 5 then
-			self.minus_speed  = 0.03
-			if SPEED_WORD <= 4 then
-				SPEED_WORD = 4
+		if ENDLESS_SPEED_WORD <= 5 then
+			-- self.minus_speed  = 0.04
+			if ENDLESS_SPEED_WORD <= 1 then
+				ENDLESS_SPEED_WORD = 1
 			end
 		end
-		if TIME_SPAWN_WORD <= 0.5 then
-			self.minus_time = 0.01
-			if TIME_SPAWN_WORD <= 0.3 then
-				TIME_SPAWN_WORD = 0.3
+		if ENDLESS_TIME_SPAWN_WORD <= 0.5 then
+			-- self.minus_time = 0.01
+			if ENDLESS_TIME_SPAWN_WORD <= 0.2 then
+				ENDLESS_TIME_SPAWN_WORD = 0.2
 			end
+		end
+		self.level = self.level + 1
+		if self.level <= 2 then
+			spawn_word(self)
+			spawn_word(self)
+		elseif self.level <= 4 then
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+		elseif self.level <= 6 then
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+		elseif self.level <= 8 then
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+		elseif self.level >= 10 then
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
+			spawn_word(self)
 		end
 		self.speed = 30
 	end
 end
 
+local function level_spawn_word(self)
+	local rand = math.random(1, #POSITION_WORD)
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = LEVEL_SPEED_WORD[LEVEL] })
+	remove_pos_word(rand)
+	ALL_SPAWN_WORD = ALL_SPAWN_WORD + 1
+end
+
 local function level_mode(self, dt)
 	self.time = self.time - dt
-	if self.time < 0 then
-		level_spawn_word(self)
-		self.time = TIME_SPAWN_WORD[LEVEL]
+	self.time_level = self.time_level - dt
+	self.speed = self.speed - dt
+	if self.speed < 0 then
+		factory.create("#bonus")
+		LEVEL_SPEED_WORD[LEVEL] = LEVEL_SPEED_WORD[LEVEL] - self.minus_speed/2
+		if LEVEL_SPEED_WORD[LEVEL] < 0.5 then
+			LEVEL_SPEED_WORD[LEVEL] = 0.5
+		end
+		LEVEL_TIME_SPAWN_WORD[LEVEL] = LEVEL_TIME_SPAWN_WORD[LEVEL] - self.minus_time/2
+		if LEVEL_TIME_SPAWN_WORD[LEVEL] < 0.2 then
+			LEVEL_TIME_SPAWN_WORD[LEVEL] = 0.2
+		end
+		msg.post("main:/go#guigame", "set_color")
+		if LEVEL < 5 then
+			level_spawn_word(self)
+			level_spawn_word(self)
+		elseif LEVEL < 30 then
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+		elseif LEVEL < 40 then
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+		elseif LEVEL < 50 then
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+		elseif LEVEL >= 50 then
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+			level_spawn_word(self)
+		end
+		self.speed = 30
+	end
+	if self.time_level > 0 then
+		if self.time < 0 then
+			level_spawn_word(self)
+			self.time = LEVEL_TIME_SPAWN_WORD[LEVEL]
+		end
+		msg.post("main:/go#guigame", "set_progress_bar", {value = self.time_level})
+	else
+		if ALL_SPAWN_WORD == ALL_WORD then
+			msg.post("main:/go#guigame", "win_level")
+			msg.post("menu:/go#menu", "win_level")
+			self.play_game = false
+		end
+	end
+end
+
+local function boost_spawn_word(self)
+	local rand = math.random(1, #POSITION_WORD)
+	factory.create("#word", vmath.vector3(POSITION_WORD[rand],1190,0) ,nil, { speed = 1 })
+	remove_pos_word(rand)
+	ALL_SPAWN_WORD = ALL_SPAWN_WORD + 1
+end
+local function boost_time(self, dt)
+	self.boost_time = self.boost_time - dt
+	self.boost_spawn_word = self.boost_spawn_word - dt
+	msg.post("main:/go#guigame", "boost_time", {value = self.boost_time})
+	if self.boost_spawn_word < 0 then
+		boost_spawn_word(self)
+		self.boost_spawn_word = 0.2
+	end
+	if self.boost_time < 0 then
+		BOOST = false
+		self.boost_time = 20
 	end
 end
 
@@ -54,22 +158,61 @@ function init(self)
 	set_life(0)
 	new_list_word()
 	new_list_pos()
+	self.time_limit_boost = 40
 	self.level = 0
 	self.time = 1
+	self.time_level = 1
+	self.play_game = true
 	self.speed = 30
 	self.mode = GAME_MODE
-	self.minus_speed = 1
+	self.minus_speed = 0.5
 	self.minus_time = 0.05
+	self.boost_time = 20
+	self.boost_spawn_word = 0.2
 	self.color = 1
 	factory.create("#bonus")
+	if LEVEL > 50 then
+		local razni = LEVEL - 50
+		for i = 1, razni do
+			table.insert(LEVEL_TIME_GAME, LEVEL_TIME_GAME[#LEVEL_TIME_GAME])
+			local min_time = LEVEL_TIME_SPAWN_WORD[#LEVEL_TIME_SPAWN_WORD] - 0.05
+			if min_time < 0.25 then
+				min_time = 0.25
+				print("min time", min_time)
+			end
+			table.insert(LEVEL_TIME_SPAWN_WORD, min_time)
+			local min_speed = LEVEL_SPEED_WORD[#LEVEL_SPEED_WORD] - 0.05
+			if min_speed < 2 then
+				min_speed = 2
+				print("min_speed", min_speed)
+			end
+			table.insert(LEVEL_SPEED_WORD, min_speed)
+		end
+		print(#LEVEL_TIME_GAME)
+	end
+	if self.mode == "level" then
+		msg.post("main:/go#guigame", "set_text_level")
+		self.time_level = LEVEL_TIME_GAME[LEVEL]
+	end
 end
 
 function update(self, dt)
-	if self.mode == "endless" then
-		endless_mode(self, dt)
-		print("endless")
-	elseif self.mode == "level" then
-		level_mode(self, dt)
-		print("level")
+	if not FREE_BOOST then
+		self.time_limit_boost = self.time_limit_boost - dt
+	end
+	if self.time_limit_boost < 0 then
+		msg.post("main:/go#guigame", "boost")
+		self.time_limit_boost = 60
+	end
+	if BOOST then
+		boost_time(self, dt)
+	else
+		if self.mode == "endless" then
+			endless_mode(self, dt)
+		elseif self.mode == "level" then
+			if self.play_game then
+				level_mode(self, dt)
+			end
+		end
 	end
 end

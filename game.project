@@ -14,7 +14,7 @@ input_method = HiddenInputField
 [project]
 title = WASD_WAR
 developer = Mika games
-dependencies#0 = https://github.com/indiesoftby/defold-yagames/tree/master/yagames
+dependencies#0 = https://github.com/indiesoftby/defold-yagames/archive/refs/heads/master.zip
 
 [collection]
 max_input_stack_entries = 999

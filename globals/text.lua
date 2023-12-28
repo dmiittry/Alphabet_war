@@ -16,6 +16,10 @@ RUS_TEXT = {
 	level_mode = " Уровень",
 	endless_mode = "Бесконечный режим",
 	lang = "Язык: Русский",
+	level_text = " уровень",
+	boost = "Boost ADS",
+	boost_free = "Boost Free",
+	win_text = "Поздравляю!"
 }
 ENG_TEXT = {
 	score = "Score: ",
@@ -33,6 +37,10 @@ ENG_TEXT = {
 	level_mode = " Level",
 	endless_mode = "Endless mode",
 	lang = "Language: English",
+	level_text = " level",
+	boost = "Boost ADS",
+	boost_free = "Boost Free",
+	win_text = "Congratulations!"
 }
 
 function change_lang(lang)
@@ -46,8 +54,5 @@ function change_lang(lang)
 			LANG_TEXT[key] = value
 		end
 	end
-	-- for key, value in pairs(LANG_TEXT) do
-	-- 	print(key, value)
-	-- end
 end
 

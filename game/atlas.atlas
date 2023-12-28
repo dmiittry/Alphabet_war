@@ -1,8 +1,4 @@
 images {
-  image: "/assets/button.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/assets/appbar.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
@@ -16,6 +12,22 @@ images {
 }
 images {
   image: "/assets/hearts_empty.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/background.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/banner.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/button1.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/button.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

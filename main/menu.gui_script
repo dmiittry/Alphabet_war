@@ -15,10 +15,11 @@ function init(self)
 	change_lang(self.lang)
 	msg.post(".", "acquire_input_focus")
 	self.is_play = true
+	PARTICLEFX = gui.get_node("particlefx")
+	gui.play_particlefx(PARTICLEFX)
 	PAUSE_NODE = gui.get_node("pause")
 	DEAD_NODE = gui.get_node("dead")
 	ACCURACY_TEXT = gui.get_node("accuracy_text")
-	ACCURACY_TEXT1 = gui.get_node("accuracy_text1")
 	DEAD_TEXT = gui.get_node("dead_text")
 	TIME_TEXT = gui.get_node("time_text")
 	WORD_TEXT = gui.get_node("word_text")
@@ -29,17 +30,28 @@ function init(self)
 	SCORE_TEXT1 = gui.get_node("score_text1")
 	CONTINUE_TEXT = gui.get_node("continue_text")
 	CONTINUE_TEXT1 = gui.get_node("continue_text1")
+	ACCURACY_TEXT1 = gui.get_node("accuracy_text1")
 	EXIT_TEXT = gui.get_node("exit_text")
 	EXIT_TEXT1 = gui.get_node("exit_text1")
 	MENU_BOX = gui.get_node("menu_box")
 	RECORD_TEXT = gui.get_node("record")
 	SELCET_TEXT = gui.get_node("select_mode")
-	LEVEL_TEXT = gui.get_node("level_mode")
+	LEVEL_MODE = gui.get_node("level_mode")
 	ENDLESS_TEXT = gui.get_node("endless_mode")
 	LANG_BTN_TEXT = gui.get_node("lang_btn")
+
+	WIN_NODE = gui.get_node("win_node")
+	WIN_TEXT = gui.get_node("win_text")
+	TIME_TEXT2 = gui.get_node("time_text2")
+	WORD_TEXT2 = gui.get_node("word_text2")
+	SCORE_TEXT2 = gui.get_node("score_text2")
+	CONTINUE_TEXT2 = gui.get_node("continue_text2")
+	ACCURACY_TEXT2 = gui.get_node("accuracy_text2")
+	
 	gui.set_enabled(MENU_BOX, true)
 	gui.set_enabled(PAUSE_NODE, false)
 	gui.set_enabled(DEAD_NODE, false)
+	gui.set_enabled(WIN_NODE, false)
 	msg.post(".", "change_text")
 end
 
@@ -47,9 +59,16 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("proxy_loaded") then
 		msg.post(sender, "enable")
 	elseif message_id == hash("change_text") then
-		gui.set_text(RECORD_TEXT, LANG_TEXT["record"] .. SCORE)
+		gui.set_text(TIME_TEXT2, LANG_TEXT["play_time"] .. PLAY_TIME)
+		gui.set_text(WORD_TEXT2, LANG_TEXT["word"] .. ALL_WORD)
+		gui.set_text(SCORE_TEXT2, LANG_TEXT["score"] .. SCORE)
+		gui.set_text(CONTINUE_TEXT2, LANG_TEXT["continue"])
+		gui.set_text(WIN_TEXT, LANG_TEXT["win_text"])
+		gui.set_text(ACCURACY_TEXT2, LANG_TEXT["accuracy"] .. string.format("%.1f", ACCURACY).."%")
+		
+		gui.set_text(RECORD_TEXT, LANG_TEXT["record"] .. RECORD)
 		gui.set_text(SELCET_TEXT, LANG_TEXT["select_mode"])
-		gui.set_text(LEVEL_TEXT, LEVEL .. LANG_TEXT["level_mode"])
+		gui.set_text(LEVEL_MODE, LEVEL .. LANG_TEXT["level_mode"])
 		gui.set_text(ENDLESS_TEXT, LANG_TEXT["endless_mode"])
 		gui.set_text(LANG_BTN_TEXT, LANG_TEXT["lang"])
 		
@@ -76,7 +95,15 @@ function on_message(self, message_id, message, sender)
 			stop(self)
 			gui.set_enabled(PAUSE_NODE, true)
 		end
+	elseif message_id == hash("win_level") then
+		set_record(SCORE)
+		LEVEL = LEVEL + 1
+		msg.post("menu:/go#yandex", "set_stats", {value = LEVEL, record = RECORD})
+		stop(self)
+		msg.post(".", "change_text")
+		gui.set_enabled(WIN_NODE, true)
 	elseif message_id == hash("dead") then
+		msg.post("menu:/go#yandex", "set_stats", {value = LEVEL, record = RECORD})
 		stop(self)
 		msg.post(".", "change_text")
 		gui.set_enabled(DEAD_NODE, true)
@@ -86,8 +113,12 @@ function on_message(self, message_id, message, sender)
 		set_life(0)
 		play(self)
 	elseif message_id == hash("main_menu") then
+		msg.post("menu:/go#yandex", "set_stats", {value = LEVEL, record = RECORD})
+		gui.set_enabled(PARTICLEFX, true)
+		gui.play_particlefx(PARTICLEFX)
 		gui.set_enabled(PAUSE_NODE, false)
 		gui.set_enabled(DEAD_NODE, false)
+		gui.set_enabled(WIN_NODE, false)
 		msg.post("#collectionproxy", "unload")
 		gui.set_enabled(MENU_BOX, true)
 	end
@@ -95,43 +126,46 @@ end
 
 function on_input(self, action_id, action)
 	if action_id == hash("touch") and action.pressed and gui.pick_node(CONTINUE_TEXT, action.x, action.y) and gui.is_enabled(DEAD_NODE) then
-		msg.post(".", "comeback")
+		msg.post("menu:/go#yandex", "show_rewarded_video")
+		-- msg.post("menu:/go#menu", "comeback")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(CONTINUE_TEXT1, action.x, action.y) and gui.is_enabled(PAUSE_NODE) then
 		msg.post(".", "game_state")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(EXIT_TEXT, action.x, action.y) and gui.is_enabled(DEAD_NODE) then
+		set_record(SCORE)
 		msg.post(".", "main_menu")
+		msg.post("menu:/go#yandex", "show_fullscreen_adv")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(EXIT_TEXT1, action.x, action.y) and gui.is_enabled(PAUSE_NODE) then
+		set_record(SCORE)
 		msg.post(".", "main_menu")
-	elseif action_id == hash("touch") and action.pressed and gui.pick_node(LEVEL_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
+		msg.post("menu:/go#yandex", "show_fullscreen_adv")
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(WIN_NODE, action.x, action.y) and gui.is_enabled(WIN_NODE) then
+		set_record(SCORE)
+		msg.post(".", "main_menu")
+		if LEVEL > 5 then
+			msg.post("menu:/go#yandex", "show_feedback")
+		else
+			msg.post("menu:/go#yandex", "show_fullscreen_adv")
+		end
+	elseif action_id == hash("touch") and action.pressed and gui.pick_node(LEVEL_MODE, action.x, action.y) and gui.is_enabled(MENU_BOX) then
 		self.is_play = true
 		play(self)
 		gui.set_enabled(MENU_BOX, false)
 		GAME_MODE = "level"
-		TIME_SPAWN_WORD = LEVEL_TIME_SPAWN_WORD
-		SPEED_WORD = LEVEL_SPEED_WORD
-		KILL_ALL = false
-		TOUCH_WORD = ""
-		ALL_WORD = 0
-		ALL_TOUCH = 0
-		ACCURACY = 0
-		SCORE = 0
-		PLAY_TIME = 0
+		reset_settings()
+		gui.stop_particlefx(PARTICLEFX)
+		gui.set_enabled(PARTICLEFX, false)
 		msg.post("#collectionproxy", "load")
+		msg.post("menu:/go#yandex", "show_fullscreen_adv")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(ENDLESS_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
 		self.is_play = true
 		play(self)
 		gui.set_enabled(MENU_BOX, false)
 		GAME_MODE = "endless"
-		TIME_SPAWN_WORD = ENDLESS_TIME_SPAWN_WORD
-		SPEED_WORD = ENDLESS_SPEED_WORD
-		KILL_ALL = false
-		TOUCH_WORD = ""
-		ALL_WORD = 0
-		ALL_TOUCH = 0
-		ACCURACY = 0
-		SCORE = 0
-		PLAY_TIME = 0
+		reset_settings()		
+		gui.stop_particlefx(PARTICLEFX)
+		gui.set_enabled(PARTICLEFX, false)
 		msg.post("#collectionproxy", "load")
+		msg.post("menu:/go#yandex", "show_fullscreen_adv")
 	elseif action_id == hash("touch") and action.pressed and gui.pick_node(LANG_BTN_TEXT, action.x, action.y) and gui.is_enabled(MENU_BOX) then
 		if self.lang == "ru" then
 			self.lang = "en"

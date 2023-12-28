@@ -14,6 +14,7 @@ end
 local function minus_hp(self)
 	set_life(1)
 	go.delete()
+	ALL_WORD = ALL_WORD + 1
 	if self.down_word then
 		msg.post("main:/go#guigame", "down", {value = false})
 	end
@@ -64,6 +65,18 @@ function init(self)
 	-- life WORD
 	self.is_life = true
 	self.bonus = 1
+	if BOOST then
+		timer.delay(0.7, false, 
+		function()
+			ALL_TOUCH = ALL_TOUCH + 1
+			touch_word(self)
+		end)
+	end
+	-- timer.delay(0.7, false, 
+	-- function()
+	-- 	ALL_TOUCH = ALL_TOUCH + 1
+	-- 	touch_word(self)
+	-- end)
 end
 
 function on_input(self, action_id, action)
